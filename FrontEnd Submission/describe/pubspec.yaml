@@ -1,0 +1,26 @@
+name: describe_app
+description: An Intelligent Image Description and Text Reading System for Blind and Low-Vision Users
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  camera: ^0.11.0
+  flutter_tts: ^4.0.2
+  speech_to_text: ^7.0.0
+  # Talks to the describe backend (train/serve.py). See train/docs/frontend-contract.md
+  http: ^1.2.0
+  path: ^1.9.0
+
+dev_dependencies:
+  # analysis_options.yaml includes package:flutter_lints/flutter.yaml, but the
+  # package was never declared, so `flutter analyze` reported
+  # include_file_not_found and the recommended lint set was silently inactive.
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

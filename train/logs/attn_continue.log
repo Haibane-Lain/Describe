@@ -1,0 +1,57 @@
+====================================================================
+Run          : flickr30k_attn
+Device       : AMD Radeon RX 9070 XT (rocm)
+Manifest     : data\manifests\flickr30k.jsonl
+====================================================================
+device        : cuda:0
+name          : AMD Radeon RX 9070 XT
+backend       : rocm
+torch         : 2.9.1+rocmsdk20260116
+runtime       : 7.2.26024-f6f897bd3d
+Feature cache: flickr30k_resnet101_spatial.jsonl (31783, 2048, 7, 7)
+Held-out     : 1,589 images (5%) reserved for validation, excluded from training
+
+Vocabulary   : 7,488 tokens
+Train pairs  : 150,970 (30,194 images)
+Val pairs    : 7,945 (1,589 images)
+Model        : attention
+Parameters   : 30,884,160
+  resumed from checkpoints\flickr30k_attn\last.pt at epoch 3
+
+Training
+Scheduled sampling: ramping 0.00 -> 0.40 after the first teacher-forced epoch
+  epoch  4/14 step   300/1180 loss 3.0369 |g| 0.76 lr 4.83e-04 ss 0.07
+  epoch  4/14 step   600/1180 loss 3.0609 |g| 0.77 lr 4.83e-04 ss 0.07
+  epoch  4/14 step   900/1180 loss 3.0699 |g| 3.09 lr 4.83e-04 ss 0.07
+  epoch  4 done | train 3.0736 | val 3.0852 | 993.9s
+    new best (3.0852) -> checkpoints\flickr30k_attn\best.pt
+  epoch  5/14 step   300/1180 loss 3.0852 |g| 3.09 lr 4.77e-04 ss 0.10
+  epoch  5/14 step   600/1180 loss 3.0852 |g| 3.09 lr 4.77e-04 ss 0.10
+  epoch  5/14 step   900/1180 loss 3.0852 |g| 3.09 lr 4.77e-04 ss 0.10
+  epoch  5 done | train 3.0852 | val 3.0852 | 122.6s
+  epoch  6/14 step   300/1180 loss 3.0852 |g| 3.09 lr 4.59e-04 ss 0.13
+  epoch  6/14 step   600/1180 loss 3.0852 |g| 3.09 lr 4.59e-04 ss 0.13
+  epoch  6/14 step   900/1180 loss 3.0852 |g| 3.09 lr 4.59e-04 ss 0.13
+  epoch  6 done | train 3.0852 | val 3.0852 | 116.9s
+  epoch  7/14 step   300/1180 loss 3.0852 |g| 3.09 lr 4.31e-04 ss 0.17
+  epoch  7/14 step   600/1180 loss 3.0852 |g| 3.09 lr 4.31e-04 ss 0.17
+  epoch  7/14 step   900/1180 loss 3.0852 |g| 3.09 lr 4.31e-04 ss 0.17
+  epoch  7 done | train 3.0852 | val 3.0852 | 114.7s
+  epoch  8/14 step   300/1180 loss 3.0852 |g| 3.09 lr 3.93e-04 ss 0.20
+  epoch  8/14 step   600/1180 loss 3.0852 |g| 3.09 lr 3.93e-04 ss 0.20
+  epoch  8/14 step   900/1180 loss 3.0852 |g| 3.09 lr 3.93e-04 ss 0.20
+  epoch  8 done | train 3.0852 | val 3.0852 | 113.8s
+  epoch  9/14 step   300/1180 loss 3.0852 |g| 3.09 lr 3.47e-04 ss 0.23
+  epoch  9/14 step   600/1180 loss 3.0852 |g| 3.09 lr 3.47e-04 ss 0.23
+  epoch  9/14 step   900/1180 loss 3.0852 |g| 3.09 lr 3.47e-04 ss 0.23
+  epoch  9 done | train 3.0852 | val 3.0852 | 114.2s
+  epoch 10/14 step   300/1180 loss 3.0852 |g| 3.09 lr 2.97e-04 ss 0.27
+  epoch 10/14 step   600/1180 loss 3.0852 |g| 3.09 lr 2.97e-04 ss 0.27
+  epoch 10/14 step   900/1180 loss 3.0852 |g| 3.09 lr 2.97e-04 ss 0.27
+  epoch 10 done | train 3.0852 | val 3.0852 | 113.7s
+  epoch 11/14 step   300/1180 loss 3.0852 |g| 3.09 lr 2.44e-04 ss 0.30
+  epoch 11/14 step   600/1180 loss 3.0852 |g| 3.09 lr 2.44e-04 ss 0.30
+  epoch 11/14 step   900/1180 loss 3.0852 |g| 3.09 lr 2.44e-04 ss 0.30
+  epoch 11 done | train 3.0852 | val 3.0852 | 114.0s
+  epoch 12/14 step   300/1180 loss 3.0852 |g| 3.09 lr 1.91e-04 ss 0.33
+  epoch 12/14 step   600/1180 loss 3.0852 |g| 3.09 lr 1.91e-04 ss 0.33

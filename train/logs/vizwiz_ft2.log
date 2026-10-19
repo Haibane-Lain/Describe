@@ -1,0 +1,116 @@
+====================================================================
+Run          : vizwiz_ft2
+Device       : AMD Radeon RX 9070 XT (rocm)
+Manifest     : data\manifests\vizwiz_trainval.jsonl
+====================================================================
+device        : cuda:0
+name          : AMD Radeon RX 9070 XT
+backend       : rocm
+torch         : 2.9.1+rocmsdk20260116
+runtime       : 7.2.26024-f6f897bd3d
+Feature cache: vizwiz_trainval_resnet101_spatial.jsonl (31181, 2048, 7, 7)
+
+Vocabulary   : 7,488 tokens (reused from checkpoints\flickr30k_attn3\vocab.pkl)
+Train pairs  : 100,575 (22,866 images)
+Val pairs    : 33,145 (7,542 images)
+Model        : attention
+Parameters   : 30,884,160
+  initialised from checkpoints\flickr30k_attn3\best.pt
+    loaded 17 tensors, skipped 0 (shape or name mismatch)
+
+Training
+Scheduled sampling: ramping 0.00 -> 0.30 after the first teacher-forced epoch
+  epoch  1/10 step   200/1572 loss 4.5143 |g| 0.67 lr 1.00e-04 ss 0.00
+  epoch  1/10 step   400/1572 loss 4.3560 |g| 0.68 lr 1.00e-04 ss 0.00
+  epoch  1/10 step   600/1572 loss 4.2677 |g| 0.77 lr 1.00e-04 ss 0.00
+  epoch  1/10 step   800/1572 loss 4.2058 |g| 0.67 lr 1.00e-04 ss 0.00
+  epoch  1/10 step  1000/1572 loss 4.1569 |g| 0.66 lr 1.00e-04 ss 0.00
+  epoch  1/10 step  1200/1572 loss 4.1184 |g| 0.75 lr 1.00e-04 ss 0.00
+  epoch  1/10 step  1400/1572 loss 4.0852 |g| 0.78 lr 1.00e-04 ss 0.00
+  epoch  1 done | train 4.0587 | val 3.8732 | 273.4s
+    new best (3.8732) -> checkpoints\vizwiz_ft2\best.pt
+  epoch  2/10 step   200/1572 loss 3.7593 |g| 0.81 lr 9.76e-05 ss 0.00
+  epoch  2/10 step   400/1572 loss 3.7460 |g| 0.78 lr 9.76e-05 ss 0.00
+  epoch  2/10 step   600/1572 loss 3.7381 |g| 0.80 lr 9.76e-05 ss 0.00
+  epoch  2/10 step   800/1572 loss 3.7319 |g| 0.82 lr 9.76e-05 ss 0.00
+  epoch  2/10 step  1000/1572 loss 3.7214 |g| 0.77 lr 9.76e-05 ss 0.00
+  epoch  2/10 step  1200/1572 loss 3.7140 |g| 0.83 lr 9.76e-05 ss 0.00
+  epoch  2/10 step  1400/1572 loss 3.7066 |g| 0.77 lr 9.76e-05 ss 0.00
+  epoch  2 done | train 3.6999 | val 3.7658 | 269.2s
+    new best (3.7658) -> checkpoints\vizwiz_ft2\best.pt
+  epoch  3/10 step   200/1572 loss 3.5366 |g| 0.76 lr 9.05e-05 ss 0.04
+  epoch  3/10 step   400/1572 loss 3.5164 |g| 0.87 lr 9.05e-05 ss 0.04
+  epoch  3/10 step   600/1572 loss 3.5125 |g| 0.85 lr 9.05e-05 ss 0.04
+  epoch  3/10 step   800/1572 loss 3.5110 |g| 0.87 lr 9.05e-05 ss 0.04
+  epoch  3/10 step  1000/1572 loss 3.5042 |g| 0.84 lr 9.05e-05 ss 0.04
+  epoch  3/10 step  1200/1572 loss 3.4991 |g| 0.83 lr 9.05e-05 ss 0.04
+  epoch  3/10 step  1400/1572 loss 3.4958 |g| 0.85 lr 9.05e-05 ss 0.04
+  epoch  3 done | train 3.4909 | val 3.7328 | 338.3s
+    new best (3.7328) -> checkpoints\vizwiz_ft2\best.pt
+  epoch  4/10 step   200/1572 loss 3.3518 |g| 0.90 lr 7.96e-05 ss 0.07
+  epoch  4/10 step   400/1572 loss 3.3460 |g| 0.89 lr 7.96e-05 ss 0.07
+  epoch  4/10 step   600/1572 loss 3.3413 |g| 0.89 lr 7.96e-05 ss 0.07
+  epoch  4/10 step   800/1572 loss 3.3440 |g| 0.96 lr 7.96e-05 ss 0.07
+  epoch  4/10 step  1000/1572 loss 3.3464 |g| 0.90 lr 7.96e-05 ss 0.07
+  epoch  4/10 step  1200/1572 loss 3.3443 |g| 0.85 lr 7.96e-05 ss 0.07
+  epoch  4/10 step  1400/1572 loss 3.3417 |g| 0.91 lr 7.96e-05 ss 0.07
+  epoch  4 done | train 3.3395 | val 3.7213 | 331.8s
+    new best (3.7213) -> checkpoints\vizwiz_ft2\best.pt
+  epoch  5/10 step   200/1572 loss 3.2158 |g| 0.91 lr 6.58e-05 ss 0.11
+  epoch  5/10 step   400/1572 loss 3.2125 |g| 0.89 lr 6.58e-05 ss 0.11
+  epoch  5/10 step   600/1572 loss 3.2148 |g| 1.00 lr 6.58e-05 ss 0.11
+  epoch  5/10 step   800/1572 loss 3.2169 |g| 0.89 lr 6.58e-05 ss 0.11
+  epoch  5/10 step  1000/1572 loss 3.2142 |g| 0.96 lr 6.58e-05 ss 0.11
+  epoch  5/10 step  1200/1572 loss 3.2145 |g| 0.97 lr 6.58e-05 ss 0.11
+  epoch  5/10 step  1400/1572 loss 3.2155 |g| 0.90 lr 6.58e-05 ss 0.11
+  epoch  5 done | train 3.2149 | val 3.7332 | 334.9s
+  epoch  6/10 step   200/1572 loss 3.1250 |g| 1.03 lr 5.05e-05 ss 0.15
+  epoch  6/10 step   400/1572 loss 3.1198 |g| 1.03 lr 5.05e-05 ss 0.15
+  epoch  6/10 step   600/1572 loss 3.1184 |g| 0.98 lr 5.05e-05 ss 0.15
+  epoch  6/10 step   800/1572 loss 3.1142 |g| 1.01 lr 5.05e-05 ss 0.15
+  epoch  6/10 step  1000/1572 loss 3.1132 |g| 1.05 lr 5.05e-05 ss 0.15
+  epoch  6/10 step  1200/1572 loss 3.1127 |g| 0.97 lr 5.05e-05 ss 0.15
+  epoch  6/10 step  1400/1572 loss 3.1130 |g| 0.99 lr 5.05e-05 ss 0.15
+  epoch  6 done | train 3.1137 | val 3.7466 | 332.9s
+  epoch  7/10 step   200/1572 loss 3.0149 |g| 0.95 lr 3.52e-05 ss 0.19
+  epoch  7/10 step   400/1572 loss 3.0237 |g| 1.31 lr 3.52e-05 ss 0.19
+  epoch  7/10 step   600/1572 loss 3.0235 |g| 0.97 lr 3.52e-05 ss 0.19
+  epoch  7/10 step   800/1572 loss 3.0233 |g| 0.98 lr 3.52e-05 ss 0.19
+  epoch  7/10 step  1000/1572 loss 3.0255 |g| 0.99 lr 3.52e-05 ss 0.19
+  epoch  7/10 step  1200/1572 loss 3.0237 |g| 0.98 lr 3.52e-05 ss 0.19
+  epoch  7/10 step  1400/1572 loss 3.0233 |g| 0.97 lr 3.52e-05 ss 0.19
+  epoch  7 done | train 3.0233 | val 3.7579 | 333.6s
+  epoch  8/10 step   200/1572 loss 2.9352 |g| 0.99 lr 2.14e-05 ss 0.22
+  epoch  8/10 step   400/1572 loss 2.9435 |g| 1.05 lr 2.14e-05 ss 0.22
+  epoch  8/10 step   600/1572 loss 2.9434 |g| 1.00 lr 2.14e-05 ss 0.22
+  epoch  8/10 step   800/1572 loss 2.9438 |g| 0.98 lr 2.14e-05 ss 0.22
+  epoch  8/10 step  1000/1572 loss 2.9454 |g| 1.09 lr 2.14e-05 ss 0.22
+  epoch  8/10 step  1200/1572 loss 2.9443 |g| 0.99 lr 2.14e-05 ss 0.22
+  epoch  8/10 step  1400/1572 loss 2.9451 |g| 1.02 lr 2.14e-05 ss 0.22
+  epoch  8 done | train 2.9457 | val 3.7798 | 356.2s
+  epoch  9/10 step   200/1572 loss 2.8731 |g| 1.01 lr 1.05e-05 ss 0.26
+  epoch  9/10 step   400/1572 loss 2.8777 |g| 1.04 lr 1.05e-05 ss 0.26
+  epoch  9/10 step   600/1572 loss 2.8785 |g| 1.01 lr 1.05e-05 ss 0.26
+  epoch  9/10 step   800/1572 loss 2.8790 |g| 0.98 lr 1.05e-05 ss 0.26
+  epoch  9/10 step  1000/1572 loss 2.8772 |g| 1.05 lr 1.05e-05 ss 0.26
+  epoch  9/10 step  1200/1572 loss 2.8765 |g| 1.07 lr 1.05e-05 ss 0.26
+  epoch  9/10 step  1400/1572 loss 2.8773 |g| 1.06 lr 1.05e-05 ss 0.26
+  epoch  9 done | train 2.8781 | val 3.8071 | 334.7s
+  epoch 10/10 step   200/1572 loss 2.8187 |g| 1.02 lr 3.42e-06 ss 0.30
+  epoch 10/10 step   400/1572 loss 2.8158 |g| 0.96 lr 3.42e-06 ss 0.30
+  epoch 10/10 step   600/1572 loss 2.8159 |g| 0.97 lr 3.42e-06 ss 0.30
+  epoch 10/10 step   800/1572 loss 2.8142 |g| 1.06 lr 3.42e-06 ss 0.30
+  epoch 10/10 step  1000/1572 loss 2.8149 |g| 0.98 lr 3.42e-06 ss 0.30
+  epoch 10/10 step  1200/1572 loss 2.8144 |g| 1.05 lr 3.42e-06 ss 0.30
+  epoch 10/10 step  1400/1572 loss 2.8143 |g| 1.11 lr 3.42e-06 ss 0.30
+  epoch 10 done | train 2.8156 | val 3.8237 | 330.7s
+
+Finished in 54.0 min
+Checkpoints : checkpoints\vizwiz_ft2
+History     : runs\vizwiz_ft2\history.jsonl
+
+Sample captions (train images, beam decoding)
+  [0] A cigarette cigarette a a cigarette a.
+  [1] A keyboard a of a a
+  [2] A
+  (a smoke-level model produces degenerate text; that is expected)

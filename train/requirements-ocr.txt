@@ -1,0 +1,46 @@
+# Dependencies for the OCR component (train/ocr/).
+#
+# EasyOCR is the engine the project already committed to: see
+# concept-proposal-v2.md (OCR tool row, bibliography), image-description-app-plan.md
+# ("OCR: EasyOCR (pretrained, called as a tool)") and docs/build-plan.md 2.4.
+# Training OCR is out of scope -- this is a pretrained tool wrapped as an
+# internal component, with preprocessing and an honest measurement around it.
+#
+# INSTALL WITH THE CONSTRAINTS FILE, or the ROCm torch build can be replaced:
+#
+#     $env:TEMP = "$PWD\.tmp"; $env:TMP = "$PWD\.tmp"    # no writable TEMP in some shells
+#     py -3.12 -m pip install -c train/constraints-ocr.txt -r train/requirements-ocr.txt
+#     py -3.12 -c "import easyocr, torch; print(easyocr.__version__, torch.__version__, torch.cuda.is_available())"
+#     py -3.12 -m train.smoke_test                       # must still be 18/18
+#
+# torch / torchvision are deliberately NOT listed here: they are already
+# installed as the ROCm build and are pinned in train/constraints-ocr.txt.
+# easyocr requires `torch` and `torchvision>=0.5`; both are satisfied, which is
+# exactly why the pin is a constraint and not a dependency.
+#
+# What pip adds (none of it was present before, verified):
+#   opencv-python-headless, scipy, scikit-image, python-bidi, PyYAML, Shapely,
+#   pyclipper, ninja  (~150 MB total)
+#
+# Model weights are NOT downloaded by pip. The first `easyocr.Reader(...)`
+# downloads craft_mlt_25k (~80 MB, detector) and english_g2 (~15 MB, recogniser)
+# into --model-dir (default checkpoints/easyocr/), which train/.gitignore
+# already ignores.
+#
+# easyocr is pinned to 1.7.2: at tag v1.7.2 both detection.py and recognition.py
+# already call torch.load(..., weights_only=False), which is required by torch
+# 2.6+ (this machine runs 2.9.1). Older releases break with a weights_only
+# UnpicklingError.
+easyocr==1.7.2
+
+# OpenCV: pinned to 4.11.0.86 on purpose, twice over.
+#   * 5.x is a new major EasyOCR 1.7.2 was not built against; 4.x is the tested
+#     API surface.
+#   * 4.12.0.88 requires numpy<2.3.0. The installed numpy is 2.4.4 and is pinned
+#     in train/constraints-ocr.txt, so 4.12 is unsatisfiable here -- and because
+#     this shell installs to the *user* site-packages, "helpfully" downgrading
+#     numpy would shadow the system numpy that torch was built against.
+#     4.11.0.86 declares numpy>=1.26 with no upper cap, so everything agrees.
+# Install with --only-binary :all: (see the command above) so a missing wheel
+# fails immediately instead of starting a silent source build.
+opencv-python-headless==4.11.0.86

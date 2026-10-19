@@ -1,0 +1,28 @@
+{
+  "canvas_size": 1600,
+  "mag_ratio": 1.0,
+  "batch_size": 8,
+  "text_threshold": 0.6,
+  "link_threshold": 0.35,
+  "low_text": 0.35,
+
+  "_provenance": {
+    "selected_on": "VizWiz-VQA train split, first 400 reading questions (ocr-plan.md section 2 forbids tuning on the 577 validation images)",
+    "selected_by": "train.ocr.measure Stage 3 screen, five configurations, same scoring rule as the captioner",
+    "selected_at": "2026-10-19",
+    "why": [
+      "canvas_size 2560 (EasyOCR's default) cost 3.36 s/run against 0.70 s/run at 1600 with no measurable accuracy difference: 45 vs 46 hits out of 400, against a standard error of about 1.6 percentage points. The 4.8x speedup is the only statistically solid finding.",
+      "1600px covers the median validation image (long side 1296 px) without the detector downscaling it, which is why the reduction is cheap.",
+      "mag_ratio 1.0 rather than 1.5: the extra magnification pass is the second-most expensive knob and did not separate the configurations.",
+      "The lenient detector thresholds (text 0.6, link 0.35, low_text 0.35 against EasyOCR's 0.7/0.4/0.4) had the joint-highest hit count and the fewest images with no text at all (71 of 400). Dense small text is the recall problem here -- sign/screen and label/packaging are 56 percent of the reading bucket -- so admitting weaker boxes is the direction worth leaning.",
+      "This file deliberately pins no 'preprocess' key, so --pipelines none,enhance stay distinct and the measurement reports both with identical engine parameters."
+    ],
+    "screen_results_train_400": {
+      "A_2560_1.5_default_none": {"hits": 45, "rate": 0.112, "s_per_run": 3.36, "empty": 73},
+      "B_1600_1.5_default_none": {"hits": 42, "rate": 0.105, "s_per_run": 0.71, "empty": 78},
+      "C_1600_1.0_default_enhance": {"hits": 44, "rate": 0.110, "s_per_run": 0.69, "empty": 76},
+      "D_1600_1.0_lenient_none": {"hits": 46, "rate": 0.115, "s_per_run": 0.61, "empty": 74},
+      "E_1600_1.0_lenient_enhance": {"hits": 46, "rate": 0.115, "s_per_run": 0.70, "empty": 71}
+    }
+  }
+}

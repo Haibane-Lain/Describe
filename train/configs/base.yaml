@@ -1,0 +1,56 @@
+# Base configuration for captioner training.
+# Every value here can be overridden on the command line.
+
+seed: 1337
+
+# ------------------------------------------------------------------ runtime
+runtime:
+  # MIOpen control. "auto" disables it on RDNA4 (RX 9060/9070) because the
+  # ROCm 7.2 Windows SDK lacks rocrand headers needed by the MIOpen dropout
+  # kernel, which breaks any multi-layer LSTM with inter-layer dropout.
+  # Set to "enable" once AMD ships a fixed SDK.
+  miopen: auto
+
+paths:
+  data_root: data/raw
+  manifest_dir: data/manifests
+  feature_dir: data/features
+  checkpoint_dir: checkpoints
+  run_dir: runs
+
+# ---------------------------------------------------------------- vocabulary
+vocab:
+  min_freq: 5
+  max_size: 20000
+
+# ------------------------------------------------------------------- model
+model:
+  feature_dim: 2048        # ResNet-101 penultimate width; set 2048 for resnet50 too
+  embed_dim: 512
+  hidden_dim: 512
+  num_layers: 2
+  dropout: 0.5
+
+# ---------------------------------------------------------------- training
+train:
+  batch_size: 128
+  epochs: 20
+  lr: 0.001
+  weight_decay: 0.00001
+  grad_clip: 5.0
+  lr_scheduler: cosine
+  num_workers: 0           # Windows: keep 0 unless you wrap the entry point
+  log_every: 50
+
+# ------------------------------------------------------------------ decoding
+decode:
+  beam_size: 5
+  max_len: 30
+  min_len: 5
+
+# ------------------------------------------------------------- feature cache
+features:
+  backbone: resnet101
+  image_size: 224
+  batch_size: 64
+  dtype: float16

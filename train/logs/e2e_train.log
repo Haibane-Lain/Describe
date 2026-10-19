@@ -1,0 +1,114 @@
+======================================================================
+Run          : flickr30k_e2e  (end-to-end)
+Device       : AMD Radeon RX 9070 XT (rocm)
+Backbone     : resnet50 @ 224px (trainable)
+======================================================================
+Train images : 30,194
+Val images   : 1,589
+Vocabulary   : 7,488 tokens
+Train pairs  : 150,970
+Params       : encoder 23,508,032 + decoder 29,569,344
+
+Training
+  encoder lr 1e-05 | decoder lr 0.0005 | batch 64 x accum 1
+  scheduled sampling ramps 0 -> 0.3
+  checkpoint selection: best validation BLEU-4 (every 2 epochs)
+  epoch  1/40 step   200/2359 loss 5.0034 | 103.9 img/s ss 0.00
+  epoch  1/40 step   400/2359 loss 4.6408 | 113.2 img/s ss 0.00
+  epoch  1/40 step   600/2359 loss 4.4447 | 122.1 img/s ss 0.00
+  epoch  1/40 step   800/2359 loss 4.3262 | 130.3 img/s ss 0.00
+  epoch  1/40 step  1000/2359 loss 4.2344 | 137.9 img/s ss 0.00
+  epoch  1/40 step  1200/2359 loss 4.1627 | 144.9 img/s ss 0.00
+  epoch  1/40 step  1400/2359 loss 4.1022 | 151.2 img/s ss 0.00
+  epoch  1/40 step  1600/2359 loss 4.0511 | 156.9 img/s ss 0.00
+  epoch  1/40 step  1800/2359 loss 4.0071 | 161.7 img/s ss 0.00
+  epoch  1/40 step  2000/2359 loss 3.9700 | 166.0 img/s ss 0.00
+  epoch  1/40 step  2200/2359 loss 3.9367 | 169.8 img/s ss 0.00
+  epoch  1/40 step  2359/2359 loss 3.9119 | 172.6 img/s ss 0.00
+  epoch  1 done | train 3.9119 | 875s
+  epoch  2/40 step   200/2359 loss 3.2699 | 218.9 img/s ss 0.01
+  epoch  2/40 step   400/2359 loss 3.2538 | 219.2 img/s ss 0.01
+  epoch  2/40 step   600/2359 loss 3.2494 | 219.5 img/s ss 0.01
+  epoch  2/40 step   800/2359 loss 3.2493 | 219.6 img/s ss 0.01
+  epoch  2/40 step  1000/2359 loss 3.2466 | 219.7 img/s ss 0.01
+  epoch  2/40 step  1200/2359 loss 3.2446 | 219.3 img/s ss 0.01
+  epoch  2/40 step  1400/2359 loss 3.2402 | 219.2 img/s ss 0.01
+  epoch  2/40 step  1600/2359 loss 3.2363 | 219.1 img/s ss 0.01
+  epoch  2/40 step  1800/2359 loss 3.2311 | 219.0 img/s ss 0.01
+  epoch  2/40 step  2000/2359 loss 3.2281 | 219.1 img/s ss 0.01
+  epoch  2/40 step  2200/2359 loss 3.2252 | 219.0 img/s ss 0.01
+  epoch  2/40 step  2359/2359 loss 3.2219 | 219.1 img/s ss 0.01
+  epoch  2 done | train 3.2219 | val BLEU-1 0.3735 BLEU-4 0.0000 | 689s
+    new best BLEU-4 (0.0000) -> checkpoints\flickr30k_e2e\best.pt
+  epoch  3/40 step   200/2359 loss 2.8927 | 218.5 img/s ss 0.02
+  epoch  3/40 step   400/2359 loss 2.9048 | 218.3 img/s ss 0.02
+  epoch  3/40 step   600/2359 loss 2.9108 | 218.5 img/s ss 0.02
+  epoch  3/40 step   800/2359 loss 2.9127 | 218.6 img/s ss 0.02
+  epoch  3/40 step  1000/2359 loss 2.9166 | 218.6 img/s ss 0.02
+  epoch  3/40 step  1200/2359 loss 2.9191 | 218.6 img/s ss 0.02
+  epoch  3/40 step  1400/2359 loss 2.9205 | 218.6 img/s ss 0.02
+  epoch  3/40 step  1600/2359 loss 2.9237 | 218.6 img/s ss 0.02
+  epoch  3/40 step  1800/2359 loss 2.9273 | 218.6 img/s ss 0.02
+  epoch  3/40 step  2000/2359 loss 2.9297 | 218.7 img/s ss 0.02
+  epoch  3/40 step  2200/2359 loss 2.9322 | 218.6 img/s ss 0.02
+  epoch  3/40 step  2359/2359 loss 2.9333 | 218.7 img/s ss 0.02
+  epoch  3 done | train 2.9333 | 690s
+  epoch  4/40 step   200/2359 loss 2.6803 | 218.7 img/s ss 0.02
+  epoch  4/40 step   400/2359 loss 2.6867 | 219.2 img/s ss 0.02
+  epoch  4/40 step   600/2359 loss 2.6986 | 219.2 img/s ss 0.02
+  epoch  4/40 step   800/2359 loss 2.7054 | 219.0 img/s ss 0.02
+  epoch  4/40 step  1000/2359 loss 2.7117 | 218.9 img/s ss 0.02
+  epoch  4/40 step  1200/2359 loss 2.7175 | 218.9 img/s ss 0.02
+  epoch  4/40 step  1400/2359 loss 2.7246 | 218.9 img/s ss 0.02
+  epoch  4/40 step  1600/2359 loss 2.7321 | 218.9 img/s ss 0.02
+  epoch  4/40 step  1800/2359 loss 2.7370 | 218.8 img/s ss 0.02
+  epoch  4/40 step  2000/2359 loss 2.7421 | 218.9 img/s ss 0.02
+  epoch  4/40 step  2200/2359 loss 2.7462 | 218.9 img/s ss 0.02
+  epoch  4/40 step  2359/2359 loss 2.7490 | 218.9 img/s ss 0.02
+  epoch  4 done | train 2.7490 | val BLEU-1 0.4321 BLEU-4 0.0000 | 690s
+  epoch  5/40 step   200/2359 loss 2.5158 | 217.9 img/s ss 0.03
+  epoch  5/40 step   400/2359 loss 2.5304 | 218.1 img/s ss 0.03
+  epoch  5/40 step   600/2359 loss 2.5453 | 217.7 img/s ss 0.03
+  epoch  5/40 step   800/2359 loss 2.5549 | 218.0 img/s ss 0.03
+  epoch  5/40 step  1000/2359 loss 2.5643 | 218.4 img/s ss 0.03
+  epoch  5/40 step  1200/2359 loss 2.5722 | 218.6 img/s ss 0.03
+  epoch  5/40 step  1400/2359 loss 2.5789 | 218.8 img/s ss 0.03
+  epoch  5/40 step  1600/2359 loss 2.5868 | 218.9 img/s ss 0.03
+  epoch  5/40 step  1800/2359 loss 2.5943 | 218.9 img/s ss 0.03
+  epoch  5/40 step  2000/2359 loss 2.6017 | 218.9 img/s ss 0.03
+  epoch  5/40 step  2200/2359 loss 2.6073 | 219.0 img/s ss 0.03
+  epoch  5/40 step  2359/2359 loss 2.6114 | 219.0 img/s ss 0.03
+  epoch  5 done | train 2.6114 | 689s
+  epoch  6/40 step   200/2359 loss 2.4129 | 218.4 img/s ss 0.04
+  epoch  6/40 step   400/2359 loss 2.4218 | 218.3 img/s ss 0.04
+  epoch  6/40 step   600/2359 loss 2.4320 | 218.0 img/s ss 0.04
+  epoch  6/40 step   800/2359 loss 2.4416 | 218.0 img/s ss 0.04
+  epoch  6/40 step  1000/2359 loss 2.4511 | 218.1 img/s ss 0.04
+  epoch  6/40 step  1200/2359 loss 2.4589 | 218.2 img/s ss 0.04
+  epoch  6/40 step  1400/2359 loss 2.4681 | 218.3 img/s ss 0.04
+  epoch  6/40 step  1600/2359 loss 2.4756 | 218.2 img/s ss 0.04
+  epoch  6/40 step  1800/2359 loss 2.4830 | 218.3 img/s ss 0.04
+  epoch  6/40 step  2000/2359 loss 2.4893 | 218.3 img/s ss 0.04
+  epoch  6/40 step  2200/2359 loss 2.4952 | 218.3 img/s ss 0.04
+  epoch  6/40 step  2359/2359 loss 2.4999 | 218.3 img/s ss 0.04
+  epoch  6 done | train 2.4999 | val BLEU-1 0.3774 BLEU-4 0.0000 | 692s
+  epoch  7/40 step   200/2359 loss 2.3077 | 219.1 img/s ss 0.05
+  epoch  7/40 step   400/2359 loss 2.3532 | 195.4 img/s ss 0.05
+  epoch  7/40 step   600/2359 loss 2.3700 | 208.7 img/s ss 0.05
+  epoch  7/40 step   800/2359 loss 2.3784 | 216.1 img/s ss 0.05
+  epoch  7/40 step  1000/2359 loss 2.3834 | 221.0 img/s ss 0.05
+  epoch  7/40 step  1200/2359 loss 2.3868 | 224.2 img/s ss 0.05
+  epoch  7/40 step  1400/2359 loss 2.3892 | 226.7 img/s ss 0.05
+  epoch  7/40 step  1600/2359 loss 2.3910 | 228.4 img/s ss 0.05
+  epoch  7/40 step  1800/2359 loss 2.3924 | 229.8 img/s ss 0.05
+  epoch  7/40 step  2000/2359 loss 2.3935 | 231.0 img/s ss 0.05
+  epoch  7/40 step  2200/2359 loss 2.3944 | 232.0 img/s ss 0.05
+  epoch  7/40 step  2359/2359 loss 2.3950 | 232.7 img/s ss 0.05
+  epoch  7 done | train 2.3950 | 649s
+  epoch  8/40 step   200/2359 loss 2.4036 | 242.3 img/s ss 0.05
+  epoch  8/40 step   400/2359 loss 2.4036 | 242.9 img/s ss 0.05
+  epoch  8/40 step   600/2359 loss 2.4036 | 243.0 img/s ss 0.05
+  epoch  8/40 step   800/2359 loss 2.4036 | 243.0 img/s ss 0.05
+  epoch  8/40 step  1000/2359 loss 2.4036 | 243.0 img/s ss 0.05
+  epoch  8/40 step  1200/2359 loss 2.4036 | 243.1 img/s ss 0.05
+  epoch  8/40 step  1400/2359 loss 2.4036 | 243.1 img/s ss 0.05

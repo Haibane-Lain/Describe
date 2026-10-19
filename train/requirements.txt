@@ -1,0 +1,40 @@
+# Dependencies for captioner training.
+#
+# IMPORTANT: this project uses the ROCm build of PyTorch, which is already
+# installed for Python 3.12 on this machine:
+#
+#     torch        2.9.1+rocmsdk20260116
+#     torchvision  0.24.1+rocmsdk20260116
+#     rocm         7.2.0.dev0
+#
+# Do NOT run a plain `pip install torch` in this environment - it will replace
+# the ROCm build with the CPU/default build and disable the GPU.
+#
+# To rebuild the ROCm environment from scratch (AMD documented path, ROCm 7.2):
+#   pip install --no-cache-dir ^
+#     https://repo.radeon.com/rocm/windows/rocm-rel-7.2/rocm_sdk_core-7.2.0.dev0-py3-none-win_amd64.whl ^
+#     https://repo.radeon.com/rocm/windows/rocm-rel-7.2/rocm_sdk_devel-7.2.0.dev0-py3-none-win_amd64.whl ^
+#     https://repo.radeon.com/rocm/windows/rocm-rel-7.2/rocm_sdk_libraries_custom-7.2.0.dev0-py3-none-win_amd64.whl ^
+#     https://repo.radeon.com/rocm/windows/rocm-rel-7.2/rocm-7.2.0.dev0.tar.gz
+#   pip install --no-cache-dir ^
+#     https://repo.radeon.com/rocm/windows/rocm-rel-7.2/torch-2.9.1%%2Brocmsdk20260116-cp312-cp312-win_amd64.whl ^
+#     https://repo.radeon.com/rocm/windows/rocm-rel-7.2/torchvision-0.24.1%%2Brocmsdk20260116-cp312-cp312-win_amd64.whl
+
+# Installed alongside the ROCm build:
+numpy>=2.0
+pillow>=10
+tqdm>=4.66
+
+# Evaluation metrics. pycocoevalcap provides the VizWiz-Captions metric set.
+#
+# VERIFIED WORKING on this machine: BLEU-1-4, METEOR, ROUGE-L, CIDEr-D.
+# NOT WORKING: SPICE. It shells out to a bundled Java jar (spice-1.0.jar) with
+# Stanford CoreNLP 3.6.0, which uses FST reflection that modern JDKs block:
+#   java.lang.reflect.InaccessibleObjectException:
+#   Unable to make field private final byte[] java.lang.String.value accessible
+# Report SPICE as unavailable rather than reporting a zero.
+#
+# evaluate.py falls back to a pure-Python BLEU-4 implementation if this package
+# is missing entirely, so evaluation never hard-fails.
+pycocoevalcap>=1.2
+pycocotools>=2.0.2

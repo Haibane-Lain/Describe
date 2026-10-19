@@ -1,0 +1,45 @@
+====================================================================
+Run          : vizwiz_attn_ft
+Device       : AMD Radeon RX 9070 XT (rocm)
+Manifest     : data\manifests\vizwiz_train.jsonl
+====================================================================
+device        : cuda:0
+name          : AMD Radeon RX 9070 XT
+backend       : rocm
+torch         : 2.9.1+rocmsdk20260116
+runtime       : 7.2.26024-f6f897bd3d
+Feature cache: vizwiz_train_resnet101_spatial.jsonl (23431, 2048, 7, 7)
+
+Vocabulary   : 7,488 tokens (reused from checkpoints\flickr30k_attn3\vocab.pkl)
+Train pairs  : 100,575 (22,866 images)
+Model        : attention
+Parameters   : 30,884,160
+  initialised from checkpoints\flickr30k_attn3\best.pt
+    loaded 17 tensors, skipped 0 (shape or name mismatch)
+
+Training
+Scheduled sampling: ramping 0.00 -> 0.30 after the first teacher-forced epoch
+  epoch  1/10 step   200/1572 loss 4.5143 |g| 0.67 lr 1.00e-04 ss 0.00
+  epoch  1/10 step   400/1572 loss 4.3560 |g| 0.68 lr 1.00e-04 ss 0.00
+  epoch  1/10 step   600/1572 loss 4.2677 |g| 0.77 lr 1.00e-04 ss 0.00
+  epoch  1/10 step   800/1572 loss 4.2058 |g| 0.67 lr 1.00e-04 ss 0.00
+  epoch  1/10 step  1000/1572 loss 4.1569 |g| 0.66 lr 1.00e-04 ss 0.00
+  epoch  1/10 step  1200/1572 loss 4.1184 |g| 0.75 lr 1.00e-04 ss 0.00
+  epoch  1/10 step  1400/1572 loss 4.0852 |g| 0.78 lr 1.00e-04 ss 0.00
+  epoch  1 done | train 4.0587 | 259.7s
+    new best (4.0587) -> checkpoints\vizwiz_attn_ft\best.pt
+  epoch  2/10 step   200/1572 loss 3.7780 |g| 0.75 lr 9.76e-05 ss 0.00
+  epoch  2/10 step   400/1572 loss 3.7654 |g| 0.76 lr 9.76e-05 ss 0.00
+  epoch  2/10 step   600/1572 loss 3.7530 |g| 0.81 lr 9.76e-05 ss 0.00
+  epoch  2/10 step   800/1572 loss 3.7375 |g| 0.74 lr 9.76e-05 ss 0.00
+  epoch  2/10 step  1000/1572 loss 3.7251 |g| 0.77 lr 9.76e-05 ss 0.00
+  epoch  2/10 step  1200/1572 loss 3.7142 |g| 0.80 lr 9.76e-05 ss 0.00
+  epoch  2/10 step  1400/1572 loss 3.7061 |g| 0.79 lr 9.76e-05 ss 0.00
+  epoch  2 done | train 3.6997 | 239.5s
+    new best (3.6997) -> checkpoints\vizwiz_attn_ft\best.pt
+  epoch  3/10 step   200/1572 loss 3.5078 |g| 0.78 lr 9.05e-05 ss 0.04
+  epoch  3/10 step   400/1572 loss 3.5129 |g| 0.87 lr 9.05e-05 ss 0.04
+  epoch  3/10 step   600/1572 loss 3.5088 |g| 0.79 lr 9.05e-05 ss 0.04
+  epoch  3/10 step   800/1572 loss 3.5062 |g| 0.84 lr 9.05e-05 ss 0.04
+  epoch  3/10 step  1000/1572 loss 3.5018 |g| 0.80 lr 9.05e-05 ss 0.04
+  epoch  3/10 step  1200/1572 loss 3.4984 |g| 0.85 lr 9.05e-05 ss 0.04

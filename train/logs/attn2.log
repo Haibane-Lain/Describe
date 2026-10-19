@@ -1,0 +1,35 @@
+====================================================================
+Run          : flickr30k_attn2
+Device       : AMD Radeon RX 9070 XT (rocm)
+Manifest     : data\manifests\flickr30k.jsonl
+====================================================================
+device        : cuda:0
+name          : AMD Radeon RX 9070 XT
+backend       : rocm
+torch         : 2.9.1+rocmsdk20260116
+runtime       : 7.2.26024-f6f897bd3d
+Feature cache: flickr30k_resnet101_spatial.jsonl (31783, 2048, 7, 7)
+Held-out     : 1,589 images (5%) reserved for validation, excluded from training
+
+Vocabulary   : 7,488 tokens
+Train pairs  : 150,970 (30,194 images)
+Val pairs    : 7,945 (1,589 images)
+Model        : attention
+Parameters   : 30,884,160
+
+Training
+Scheduled sampling: ramping 0.00 -> 0.25 after the first teacher-forced epoch
+  epoch  1/16 step   200/1180 loss 5.0181 |g| 0.81 lr 5.00e-04 ss 0.00
+  epoch  1/16 step   400/1180 loss 4.6729 |g| 0.79 lr 5.00e-04 ss 0.00
+  epoch  1/16 step   600/1180 loss 4.4877 |g| 0.65 lr 5.00e-04 ss 0.00
+  epoch  1/16 step   800/1180 loss 4.3591 |g| 0.65 lr 5.00e-04 ss 0.00
+  epoch  1/16 step  1000/1180 loss 4.2617 |g| 0.65 lr 5.00e-04 ss 0.00
+  epoch  1 done | train 4.1932 | val 3.8527 | 451.2s
+    new best (3.8527) -> checkpoints\flickr30k_attn2\best.pt
+  epoch  2/16 step   200/1180 loss 3.5369 |g| 0.71 lr 4.95e-04 ss 0.00
+  epoch  2/16 step   400/1180 loss 3.5286 |g| 0.69 lr 4.95e-04 ss 0.00
+  epoch  2/16 step   600/1180 loss 3.5206 |g| 0.69 lr 4.95e-04 ss 0.00
+  epoch  2/16 step   800/1180 loss 3.5139 |g| 0.68 lr 4.95e-04 ss 0.00
+  epoch  2/16 step  1000/1180 loss 3.5088 |g| 0.72 lr 4.95e-04 ss 0.00
+  epoch  2 done | train 3.5029 | val 3.7499 | 448.5s
+    new best (3.7499) -> checkpoints\flickr30k_attn2\best.pt

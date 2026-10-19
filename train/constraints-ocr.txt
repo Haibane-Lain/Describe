@@ -1,0 +1,22 @@
+# Constraints for installing the OCR stack. Pass with `-c`, never install these.
+#
+# The single risk in `pip install easyocr` is that its dependency resolver
+# decides to "help" with torch. torch 2.9.1+rocmsdk20260116 is not on PyPI --
+# it comes from repo.radeon.com -- so a resolver that touches torch either
+# fails loudly (good) or replaces it with the CPU build (silent GPU loss,
+# documented as the one fatal mistake in train/requirements.txt).
+#
+# Pinning both to the exact installed versions makes the constraint satisfied
+# and unappealing to modify, so pip leaves them alone:
+#
+#     py -3.12 -m pip install -c train/constraints-ocr.txt -r train/requirements-ocr.txt
+#
+torch==2.9.1+rocmsdk20260116
+torchvision==0.24.1+rocmsdk20260116
+
+# numpy is pinned for the same reason one step removed: this shell installs to
+# the *user* site-packages (the system one is read-only here), and user site
+# precedes system site on sys.path. A shadowing numpy would be the torch build's
+# problem even though pip never touched torch. Every OCR dependency accepts
+# numpy 2.4.4 (opencv>=2, scipy <2.8>=2, scikit-image>=1.24, shapely>=1.26).
+numpy==2.4.4

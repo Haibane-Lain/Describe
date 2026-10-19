@@ -1,0 +1,113 @@
+# ---------------------------------------------------------------------------
+# Publish policy: only what is needed to RUN the application, models included.
+#
+# Runtime needs exactly three model files (~640 MB total):
+#   checkpoints/blip_large_head/best.pt    544 MB  the captioner
+#   checkpoints/quality_gate/best.pt         2 MB  the quality gate
+#   checkpoints/easyocr/*.pth               94 MB  OCR (optional, see below)
+#
+# Everything else on disk is training input or training output. The feature
+# caches alone are 140 GB and are all regenerable, so none of it is published.
+#
+# The BLIP weights themselves are NOT in this repo: `transformers` downloads
+# `Salesforce/blip-image-captioning-large` into the Hugging Face cache on first
+# run. That is why checkpoints/*/best.pt is 544 MB rather than ~1.8 GB.
+# ---------------------------------------------------------------------------
+
+# --- Python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# --- Virtual environments ---------------------------------------------------
+.venv/
+venv/
+env/
+
+# --- Downloaded datasets and derived caches (140 GB, all regenerable) -------
+data/raw/
+data/features/
+data/interim/
+data/processed/
+
+# Manifests are image/caption *indexes* - they hold filenames and captions, not
+# the images themselves. Only the VizWiz set is published, because that is the
+# domain the app actually runs on. The COCO and Flickr30k manifests belong to an
+# approach that was measured and abandoned (see train/docs/captioner-experiments.md)
+# and are ~111 MB of dead weight.
+data/manifests/*
+!data/manifests/vizwiz_val.jsonl
+!data/manifests/vizwiz_test.jsonl
+!data/manifests/vizwiz_train.jsonl
+
+# --- Training outputs -------------------------------------------------------
+# Every checkpoint except the two the app loads. `last.pt` is a resume file
+# (~1.6 GB for BLIP-large) and is not needed to run anything.
+checkpoints/*
+!checkpoints/blip_large_head/
+!checkpoints/quality_gate/
+!checkpoints/easyocr/
+checkpoints/*/last.pt
+checkpoints/*/epoch_*.pt
+checkpoints/*/vocab.pkl
+
+# Run outputs: configs, per-epoch metrics, prediction logs. Large and not
+# needed at runtime. The one exception is the run_config.json the captioner
+# reads to learn its tune mode - that lives under checkpoints/, not here.
+runs/
+
+# --- Working directories ----------------------------------------------------
+.tmp/
+.tools/
+.archive/
+
+# --- Scratch and scratch-like artefacts at the root -------------------------
+# Proposal drafts, screenshots, scratch files. Not part of the application.
+*.docx
+*.webp
+*.zip
+com.jpg
+images.jpg
+jess.jpg
+py
+
+# Proposal and design artefacts: an HTML prototype, rendered document previews,
+# and proposal drafts. Kept locally, not part of running the app. The written
+# docs under train/docs/ ARE published - they are small and explain how the
+# system works.
+prototype/
+preview-v2e/
+preview-dataset-v6/
+dataset-stats.json
+build_proposal_v2.py
+concept-proposal-v2.md
+
+# --- Editor / OS ------------------------------------------------------------
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Secrets ----------------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# ---------------------------------------------------------------------------
+# NOT ignored on purpose:
+#   train/**                     the backend itself
+#   train/configs/ocr_frozen.json  runtime config for --ocr
+#   data/manifests/*.jsonl       image/caption lists the app reads
+#   tools/android-env.ps1        build helper for the Flutter app
+#   FrontEnd Submission/**       the Flutter source (its own .gitignore already
+#                                excludes build/ and .dart_tool/)
+#
+# OCR is currently disabled by default in train/serve.py. Its weights are still
+# published so `--ocr` works without a download; to drop them instead, add:
+#   checkpoints/easyocr/
+# They are re-downloaded on first use into the same directory.
+# ---------------------------------------------------------------------------

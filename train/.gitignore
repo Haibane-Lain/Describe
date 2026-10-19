@@ -1,0 +1,21 @@
+# Bytecode and build artefacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual environments (the project uses the system `py -3.12` with ROCm torch)
+.venv/
+venv/
+
+# Data: downloaded datasets, manifests, and cached features
+data/raw/
+data/manifests/
+data/features/
+
+# Training outputs
+checkpoints/
+runs/
+
+# Model weights downloaded by torchvision (also cached globally)
+*.pth
