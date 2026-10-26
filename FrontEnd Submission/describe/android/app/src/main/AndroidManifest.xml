@@ -1,11 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <!-- Needed by a RELEASE build: the debug manifest adds this automatically,
+         a release build does not, and without it every backend call fails. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
 
+    <!-- The describer is reached at http://<LAN-IP>:8000, which Android 9+ blocks
+         by default, so cleartext traffic has to be allowed explicitly. -->
     <application
         android:label="describe_app"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"

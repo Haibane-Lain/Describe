@@ -111,3 +111,7 @@ desktop.ini
 #   checkpoints/easyocr/
 # They are re-downloaded on first use into the same directory.
 # ---------------------------------------------------------------------------
+
+# --- Distributables (built, not source: share the zip, don't commit it) ---
+dist/
+*.apk

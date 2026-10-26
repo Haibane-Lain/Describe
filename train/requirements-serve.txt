@@ -1,0 +1,33 @@
+# Runtime dependencies for the describe backend ONLY (train/serve.py).
+#
+# This is the minimal set needed to serve the shipped model. It deliberately
+# excludes everything used only for training (pycocoevalcap, pycocotools, tqdm)
+# and the OCR stack (easyocr), because OCR is disabled by default.
+#
+# torch and torchvision are NOT listed here, on purpose. Install the build that
+# matches your GPU FIRST, because a resolver that "fixes" torch will silently
+# replace a CUDA build with a CPU one:
+#
+#   NVIDIA (CUDA 12.8):
+#     pip install torch==2.9.1 torchvision==0.24.1 --index-url https://download.pytorch.org/whl/cu128
+#
+#   Then:
+#     pip install -r train/requirements-serve.txt
+#
+# Verified working combination: torch 2.9.1, transformers 5.5.4, Python 3.12.
+#
+# opencv-python-headless is required because train/serve.py decodes video with
+# cv2. It is normally pulled in by easyocr, which we no longer install, so it
+# must be listed explicitly. The "headless" build has no GUI dependencies, which
+# is correct for a server.
+
+transformers==5.5.4
+fastapi>=0.147.0
+uvicorn[standard]>=0.54.0
+python-multipart>=0.0.32
+pillow>=12.0.0
+numpy>=2.4.0
+opencv-python-headless>=4.11.0
+safetensors>=0.7.0
+huggingface-hub>=1.33.0
+tokenizers>=0.22.0
