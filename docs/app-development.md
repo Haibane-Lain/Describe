@@ -126,7 +126,7 @@ All under `FrontEnd Submission/describe/lib/`:
 | `processing.dart` | 103 | uploads the clip, awaits the verdict |
 | `result.dart` | 226 | displays and speaks the description |
 | `settings.dart` | 289 | settings screen |
-| `app_settings.dart` | 27 | in-memory settings (see bug 2) |
+| `app_settings.dart` | 84 | settings, persisted via `shared_preferences` |
 | `api.dart` | 85 | **all HTTP** — the only file that knows the backend exists |
 | `voice.dart` | 57 | speech-recognition command listener |
 | `speech.dart` | 31 | text-to-speech wrapper |
@@ -152,7 +152,6 @@ Defined in **[train/docs/frontend-contract.md](../train/docs/frontend-contract.m
 {
   "status": "ok" | "lowConfidence" | "tooDark",
   "text": "a person is holding a bottle of vitamin water.",
-  "confidence": 100,
   "tags": ["basic caption"],
   "hint": ""
 }
@@ -168,34 +167,50 @@ Dart side parses it in `DescribeResult.fromMap` (`result.dart`).
 These were found while reviewing the code, not from user testing. They are the
 suggested starting point.
 
-### 1. `confidence` is displayed as if it were real — **highest priority**
+### 1. `confidence` was fabricated — **FIXED (removed)**
 
-`result.dart:200` renders `'Confidence ${r.confidence}%'` with a progress bar at
-`:207`.
+The app used to render `Confidence ${r.confidence}%` with a progress bar, but
+`confidence` was a backend placeholder (`100` for `ok`, `0` otherwise). It told a
+blind user "Confidence 100%" from a number that meant nothing.
 
-But `confidence` is a **placeholder** from the backend: it is `100` for `ok` and
-`0` otherwise. Calibrated confidence was never implemented. So the app currently
-tells a blind user **"Confidence 100%"** on every successful description, which
-is a fabricated number presented as a measurement.
+**Both the field and the UI are gone.** A real score was measured first and
+rejected: length-normalised sequence likelihood correlates with caption quality
+at only Spearman 0.26, but with caption *length* at 0.53 — it measures verbosity,
+not accuracy. The gate's probability scored 0.24, because it predicts image
+usability rather than caption correctness. Evidence and the full comparison are in
+[`train/docs/frontend-contract.md`](../train/docs/frontend-contract.md).
 
-For a tool aimed at blind users this is the worst class of bug: confidently wrong
-information. Suggested options:
+`status` (`ok` / `lowConfidence` / `tooDark`) is the honest signal and is what the
+UI uses. **Do not reintroduce a percentage unless you have a signal that beats
+those numbers.** `serve_smoke` asserts the exact key set, so adding the field back
+fails the test on purpose.
 
-- Remove the confidence row and progress bar entirely, or
-- Show the qualitative `status` only (`ok` / `low confidence` / `too dark`),
-  which is real, or
-- Keep the bar but label it "not available" until a real signal exists.
+### 2. Settings did not persist — **FIXED**
 
-### 2. Settings do not persist — breaks the demo after a restart
+`app_settings.dart` was in-memory only, so the backend address reset to
+`http://10.0.2.2:8000` (the emulator-only default) on **every app restart** — set
+it, test, reopen, broken again, and it looked like a network fault.
 
-`app_settings.dart` is pure in-memory state. There is no `shared_preferences`
-dependency. **The backend address resets to `http://10.0.2.2:8000` every time the
-app restarts**, which is the emulator-only address and fails on a real phone.
+It now uses `shared_preferences`. `main()` is async and awaits
+`AppSettings.load()` before `runApp`, so the first frame already has the stored
+values. `update()` keeps its signature and writes every field.
 
-So: set the address, test, close the app, reopen — it is broken again and looks
-like a network fault.
+**Verify it:** set the address, force-stop the app, reopen — it should survive.
+Or inspect the store directly:
 
-Fix: add `shared_preferences`, load in `AppSettings`, save on `update()`.
+```powershell
+adb shell run-as com.example.describe_app cat shared_prefs/FlutterSharedPreferences.xml
+```
+
+`backendUrl` should appear with your address.
+
+### 2b. New: "Test connection" button
+
+`settings.dart` now has a **Test connection** button under the address, which
+calls `DescribeApi.isReachable()` and **speaks** the result. It announces even
+when "Speak results aloud" is off, because a failed check is a problem the user
+needs to know about rather than a result. This attacks the most common demo
+failure — an address the phone cannot reach — before a clip is ever recorded.
 
 ### 3. "Retake" and "Next" do the same thing
 
@@ -254,7 +269,7 @@ never been run on hardware.
 | 9 | Dark room | `tooDark` + "Too dark…" hint spoken | **unverified** |
 | 10 | Move while recording | `lowConfidence` + blur hint spoken | **unverified** |
 | 11 | **Stop the backend, record** | speaks "I cannot reach the describer…" and returns to camera — **must not hang** | **unverified** |
-| 12 | Restart the app after setting the address | address should survive (currently: bug 2) | fails today |
+| 12 | Restart the app after setting the address | address survives the restart | **fixed**, needs device check |
 | 13 | Turn "Speak results aloud" off | errors still announced (they use `force: true`) | **unverified** |
 | 14 | Rotate the phone / background and resume | no crash, camera recovers | **unverified** |
 

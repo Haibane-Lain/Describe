@@ -9,7 +9,17 @@ import 'theme.dart';
 import 'welcome.dart';
 
 
-void main() => runApp(const App());
+Future<void> main() async {
+  // SharedPreferences needs the binding up before it is used.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Load persisted settings BEFORE the first frame. Screens read
+  // AppSettings.instance during build (camera.dart reads `gestures`, api.dart
+  // reads `backendUrl`), so building first would show - and act on - defaults.
+  await AppSettings.load();
+
+  runApp(const App());
+}
 
 
 class App extends StatelessWidget {

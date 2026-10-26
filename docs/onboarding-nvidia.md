@@ -320,8 +320,13 @@ usable frame → BLIP-large captioner describes it → JSON to the app.
 - **The captioner cannot read text.** It describes scenes and objects well but
   does not transcribe labels, titles or dates. **Never use its output for
   medication names, dosages or expiry dates** — that is explicitly out of scope.
-- **`confidence` is a placeholder** (`100` or `0`). The real signal is `status`:
-  `ok` / `lowConfidence` / `tooDark`.
+- **There is no confidence score, by design.** The response carries `status`
+  (`ok` / `lowConfidence` / `tooDark`) and nothing numeric. A percentage was tried
+  and removed: measured against caption quality, sequence likelihood scored only
+  Spearman 0.26 while correlating 0.53 with caption *length*, so any number built
+  from it would have described verbosity rather than accuracy. Do not add one back
+  without beating those numbers — see
+  [train/docs/frontend-contract.md](../train/docs/frontend-contract.md).
 - **OCR is off.** Descriptions carry no "Text in the image reads:" clause.
 - **The gate is not infallible.** It bounds false accepts at ~4.8%, so roughly 1
   in 20 unusable photos may be described as if usable.

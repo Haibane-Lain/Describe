@@ -18,7 +18,7 @@ Android app (Flutter)                Backend (Python, local GPU)
 record 5 s video  ──── HTTP ────▶   sample 10 frames
                                      quality gate picks best frame
                                      BLIP-large captioner describes it
-   speak the result  ◀── JSON ────   {"status", "text", "confidence", "tags", "hint"}
+   speak the result  ◀── JSON ────   {"status", "text", "tags", "hint"}
 ```
 
 Everything runs locally. No image or video leaves the machine.
@@ -59,8 +59,11 @@ Full details, firewall setup and troubleshooting: **[docs/onboarding-nvidia.md](
 - **The captioner cannot read text.** It describes scenes and objects, and does
   not transcribe labels, titles or dates. **Do not use its output for medication
   names, dosages or expiry dates** — that is explicitly out of scope.
-- **`confidence` is a placeholder** in the JSON. The real signal is `status`:
-  `ok` / `lowConfidence` / `tooDark`.
+- **There is no confidence score, by design.** The response carries `status`
+  (`ok` / `lowConfidence` / `tooDark`) and nothing numeric. A percentage was tried
+  and removed after measurement: sequence likelihood correlated 0.26 with caption
+  quality but 0.53 with caption *length*, so it described verbosity rather than
+  accuracy. Don't add one back without beating that.
 - **OCR is off by default** (re-enable with `--ocr`).
 
 ---

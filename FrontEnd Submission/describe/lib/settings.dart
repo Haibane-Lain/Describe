@@ -1,6 +1,8 @@
 //settings
 import 'package:flutter/material.dart';
+import 'api.dart';
 import 'app_settings.dart';
+import 'speech.dart';
 import 'theme.dart';
 
 
@@ -185,7 +187,7 @@ class SettingsScreen extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () =>
-                      s.update(() => s.backendUrl = 'http://10.0.2.2:8000'),
+                      s.update(() => s.backendUrl = AppSettings.defaultBackendUrl),
                   child: const Text('Emulator'),
                 ),
               ),
@@ -197,6 +199,18 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 8),
+          // Reachability check. The most common demo failure is an address the
+          // phone cannot reach, which is otherwise only discovered after
+          // recording a clip. Announced aloud, because this screen is used by
+          // people who cannot read the result.
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: () => _testConnection(s),
+              child: const Text('Test connection'),
+            ),
           ),
         ],
       ),
@@ -232,6 +246,26 @@ class SettingsScreen extends StatelessWidget {
     if (value != null && value.isNotEmpty) {
       s.update(() => s.backendUrl = value);
     }
+  }
+
+  /// Asks the backend whether it is alive and announces the answer.
+  ///
+  /// Announced rather than displayed: this screen is used by people who cannot
+  /// read a status line, and `force: true` means it is heard even when
+  /// "Speak results aloud" is off - a failed check is not a result, it is a
+  /// problem the user needs to know about.
+  Future<void> _testConnection(AppSettings s) async {
+    await Speaker.speak('Testing the describer.', force: true);
+    final reachable = await DescribeApi.isReachable();
+    if (!reachable) {
+      await Speaker.speak(
+        'Cannot reach the describer at ${s.backendUrl}. '
+        'Check the server is running and the phone is on the same network.',
+        force: true,
+      );
+      return;
+    }
+    await Speaker.speak('The describer is reachable.', force: true);
   }
 
   Widget _buildSpeechRate(AppSettings s) {

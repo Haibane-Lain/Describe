@@ -15,6 +15,7 @@ dependencies:
   # Talks to the describe backend (train/serve.py). See train/docs/frontend-contract.md
   http: ^1.2.0
   path: ^1.9.0
+  shared_preferences: ^2.5.6
 
 dev_dependencies:
   # analysis_options.yaml includes package:flutter_lints/flutter.yaml, but the
