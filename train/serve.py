@@ -13,16 +13,20 @@ off, `tags` never contains `"text read"` and `text` never contains a "Text in th
 image reads:" clause.
 
 The Flutter app records a **5-second video** and expects a map with
-``status``/``text``/``confidence``/``tags``/``hint``. Our models take a single
+``status``/``text``/``tags``/``hint``. Our models take a single
 image, so the clip has to be reduced to one frame. That reduction is the one
 piece of real work here, and the quality gate is the right tool for it: a blind
 user cannot aim a camera, so a 5-second clip is several chances to get a usable
 frame, and the gate can pick the best one.
 
-``confidence`` is a deliberate placeholder. The app's Dart type requires the
-field, but calibrated confidence is not implemented - what exists is *lexical*
-hedging, which is not a probability. ``status`` carries the real signal, derived
-from the gate's existing threshold and flaw heads.
+**There is no ``confidence`` field, and it is not an oversight.** One was
+implemented and then removed on evidence: a length-normalised sequence
+likelihood correlates with caption quality at only Spearman 0.26, while
+correlating with caption *length* at 0.53 - it measures verbosity, not accuracy.
+The gate's probability is no better (0.24) because it predicts image usability,
+not caption correctness. A percentage built from either would be a fabricated
+number shown to someone who cannot check it. ``status`` carries the honest
+signal, derived from the gate's threshold and flaw heads.
 
 CLI (Phase 1 - no frontend needed):
 
@@ -99,11 +103,14 @@ class FrameScore:
 
 @dataclass
 class DescribeOutput:
-    """The contract the frontend consumes."""
+    """The contract the frontend consumes.
+
+    There is deliberately no ``confidence`` field. A percentage was implemented,
+    measured, and removed - see the note in the module docstring.
+    """
 
     status: str
     text: str
-    confidence: int
     tags: list[str] = field(default_factory=list)
     hint: str = ""
 
@@ -111,7 +118,6 @@ class DescribeOutput:
         return {
             "status": self.status,
             "text": self.text,
-            "confidence": self.confidence,
             "tags": self.tags,
             "hint": self.hint,
         }
@@ -319,7 +325,6 @@ class DescribePipeline:
             return DescribeOutput(
                 status=STATUS_LOW,
                 text="I could not read the video. Please try again.",
-                confidence=0,
                 tags=[],
                 hint="Try recording again, holding the phone steady.",
             )
@@ -422,7 +427,6 @@ class DescribePipeline:
         return DescribeOutput(
             status=status,
             text=" ".join(pieces),
-            confidence=100 if status == STATUS_OK else 0,
             tags=tags,
             hint=hint,
         )
@@ -554,7 +558,6 @@ def main(argv: list[str] | None = None) -> int:
         print(f"  tags       : {result.tags}")
         if result.hint:
             print(f"  hint       : {result.hint}")
-        print(f"  confidence : {result.confidence}  (placeholder - not implemented)")
         print()
         for stage, seconds in pipeline.timings.items():
             print(f"    {stage:<8} {seconds * 1000:>7.0f} ms")

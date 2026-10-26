@@ -55,7 +55,6 @@ Use this to check the backend is up before recording.
 {
   "status": "ok",
   "text": "a person is holding a bottle of vitamin water.",
-  "confidence": 100,
   "tags": ["basic caption"],
   "hint": ""
 }
@@ -67,7 +66,6 @@ Use this to check the backend is up before recording.
 |---|---|---|
 | `status` | `"ok"` \| `"lowConfidence"` \| `"tooDark"` | matches the Dart `DescribeStatus` enum exactly |
 | `text` | string | the caption |
-| `confidence` | int | **always a placeholder** — see below |
 | `tags` | list of string | currently always `["basic caption"]` |
 | `hint` | string | retake advice; empty when `status` is `"ok"` |
 
@@ -98,16 +96,36 @@ at 4.79%:
 The app already speaks a different warning per status, so this maps onto existing
 UI with no change.
 
-### `confidence` — deliberately a placeholder
+### There is no `confidence` field — removed on evidence
 
-**Do not display or rely on `confidence`.** It is `100` for `ok` and `0`
-otherwise, purely because the Dart type requires a value.
+An earlier version returned `confidence` as an integer (`100` for `ok`, `0`
+otherwise) and the app rendered it as **"Confidence 100%"** with a progress bar.
+That was a fabricated number presented to someone who cannot check it, so both
+the field and the UI are gone.
 
-Calibrated confidence is not implemented. What the model does is *lexical*
-hedging — on unusable photographs it says "appears to be" or "too blurry" far more
-often (75.5% of the worst images against 1.7% of good ones) — but that is phrase
-counting, not a probability. Presenting it as a percentage would overstate what is
-known. `status` is the honest signal and it is what the UI should use.
+A real score was measured before removing the idea entirely. On 200 held-out
+images:
+
+| Signal | Spearman vs caption quality | vs caption length |
+|---|---|---|
+| Length-normalised sequence likelihood | **0.26** | **0.53** |
+| Quality-gate probability | 0.24 | — |
+
+Sequence likelihood tracks how long the caption is more strongly than how good it
+is, and the gate predicts *image usability*, not caption correctness. So a
+percentage built from either would have been a length proxy dressed up as
+accuracy. `status` is the honest signal, and it is what the UI uses.
+
+The correct qualitative mapping is already in `status`:
+
+| `status` | What it means |
+|---|---|
+| `ok` | the gate accepted the image; the caption is a normal description |
+| `lowConfidence` | the gate rejected it as blurry / poorly framed / obstructed |
+| `tooDark` | the gate rejected it and the frame is genuinely too dark |
+
+If you see a `confidence` key from a backend you did not build, it is an old
+server — restart it.
 
 ### `tags`
 

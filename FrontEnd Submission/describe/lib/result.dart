@@ -15,24 +15,27 @@ class DescribeResult {
   const DescribeResult({
     required this.status,
     required this.text,
-    required this.confidence,
     this.tags = const [],
     this.hint = '',
   });
 
   final DescribeStatus status;
   final String text;
-  final int confidence; // 0-100
   final List<String> tags;
   final String hint;
 
+  // There is deliberately no `confidence` field. The backend used to send a
+  // placeholder (100 for ok, 0 otherwise) and this screen displayed it as
+  // "Confidence 100%", which was a fabricated number shown to a user who cannot
+  // check it. A real score was measured and rejected: sequence likelihood tracks
+  // caption length more than caption quality, so the percentage would have been
+  // meaningless. `status` is the honest signal and is what the UI uses.
   factory DescribeResult.fromMap(Map<String, dynamic> m) => DescribeResult(
         status: DescribeStatus.values.firstWhere(
           (s) => s.name == m['status'],
           orElse: () => DescribeStatus.ok,
         ),
         text: m['text'] as String? ?? '',
-        confidence: (m['confidence'] as num?)?.round() ?? 0,
         tags: List<String>.from(m['tags'] ?? const []),
         hint: m['hint'] as String? ?? '',
       );
@@ -194,23 +197,6 @@ class _ResultScreenState extends State<ResultScreen> {
               ),
               const SizedBox(height: 10),
               Row(children: [for (final t in r.tags) TagChip(t)]),
-              if (!dark) ...[
-                const SizedBox(height: 12),
-                Text(
-                  'Confidence ${r.confidence}%',
-                  style: const TextStyle(color: kMuted, fontSize: 11),
-                ),
-                const SizedBox(height: 4),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: LinearProgressIndicator(
-                    value: r.confidence / 100,
-                    minHeight: 6,
-                    color: kYellow,
-                    backgroundColor: const Color(0xFF2A2A2A),
-                  ),
-                ),
-              ],
               const Spacer(),
               if (dark) ...[
                 BigButton(

@@ -26,7 +26,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-REQUIRED_KEYS = {"status", "text", "confidence", "tags", "hint"}
+REQUIRED_KEYS = {"status", "text", "tags", "hint"}
 VALID_STATUS = {"ok", "lowConfidence", "tooDark"}
 
 RESULTS: list[tuple[str, bool, str]] = []
@@ -149,9 +149,14 @@ def main() -> int:
         check("normal: hint is empty on acceptance",
               outputs["normal"]["hint"] == "")
 
-    # 4. confidence is a placeholder, present for the Dart type
-    check("confidence present and an int in all cases",
-          all(isinstance(p["confidence"], int) for p in outputs.values()))
+    # 4. there is no confidence field
+    #
+    # One was tried and removed: sequence likelihood tracks caption length more
+    # than caption quality (Spearman 0.53 vs 0.26), so a percentage built from it
+    # would be fabricated. The exact-key-set assertion above already enforces its
+    # absence; this check names the intent so nobody reinstates it by accident.
+    check("no confidence field in the contract",
+          all("confidence" not in p for p in outputs.values()))
 
     # 5. OCR tagging is consistent with the text
     for name, payload in outputs.items():
